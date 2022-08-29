@@ -7,6 +7,8 @@ let firstNumber = 0;
 let secondNumber = 0;
 let theOperator = 0;
 let firstOperative = true;
+let lastButton = 0;
+let operatorPressed = false;
 
 
 // add event listener for all number buttons
@@ -27,63 +29,32 @@ clearButton.addEventListener('click', function(){
 // add event listener for delete
 
 function buttonPressed(element){
-    // check if number or operator 
-    let value = element.getInnerHTML();
-    let idOfElement = element.id;
-    /*
-    If Number
-    */
-    if(value >=0 && value <=9){
-      if(firstOperative){
-        firstNumber = value;
-        answerValue = firstNumber;
-        
-        firstOperative = false;
-      }else{
-        // check if after an operator or to be added to current number
-        if(theOperator == 0 || theOperator == null || theOperator == ""){
-          firstNumber = firstNumber.toString() + value.toString();
-          answerValue = parseInt(firstNumber);
-        }else{
-          if(secondNumber == 0 || secondNumber == null || secondNumber == ""){
-            secondNumber = value;
-          }else{
-            secondNumber = secondNumber.toString() + value.toString();
-          }
-          
-          answerValue = secondNumber;
-        }
-      }
-      updateAnswer(answerValue);
+    let value = element.id;
+    if(value >=0 && value<=9){
+        // If the button pressed is a number then update the answer screen 
+        console.log("We have a number");
+        answerValue = answerValue.toString() + value.toString();   
+        console.log("the answer value" + answerValue);  
+        //displayValue = displayValue + answerValue;   
+        console.log("the display value" + displayValue);  
+    }else if(isOperator(value)){
+      displayValue = displayValue + answerValue;
+      displayValue = displayValue + value;
+      answerValue = 0;
     }
+    answerValue = (answerValue.toString()).replace(/^0+/, '');
+    displayValue = (displayValue.toString()).replace(/^0+/, '');
+    updateAnswer(answerValue);
+    updateDisplay(displayValue);
+  
+}
 
-    /*
-    If Operator
-    */
-    else if(idOfElement == "/" || idOfElement == "*" || idOfElement == "-" || idOfElement == "+"){
-
-      // if this is the first time we are operating
-      if(theOperator == 0 || theOperator == null || theOperator ==""){
-        theOperator = idOfElement;
-        // make sure correct display (e.g. / should be divide symbol and * should be x)
-        let displayOperator = theOperator;
-        if(idOfElement == "/"){
-          displayOperator = "&#247;";
-        }else if (idOfElement == "*"){
-          displayOperator = "x";
-        }
-        displayValue = answerValue + " " + displayOperator;
-        updateDisplay(displayValue);
-      }
-      
-    }
-
-    else if(idOfElement = "="){
-      evaluateAnswer();
-      
-    }
-
-
+function isOperator(val){
+  console.log("in the is operator function.  Valu is: " + val);
+  if(val=="/" || val =="+" ||val=="-" || val=="*"){
+    console.log("about to return true");
+    return true;
+  }
 }
 
 function clearScreen(){
@@ -101,6 +72,9 @@ function clearScreen(){
 function evaluateAnswer(){
   let sumTotal = operate(firstNumber, secondNumber, theOperator);
   console.log("the sum total in the evaluate answer is : "+ sumTotal);
+  console.log("updating the global variable answer");
+  answerValue = sumTotal;
+  secondNumber = sumTotal;
   updateAnswer(sumTotal);
 }
 
@@ -109,7 +83,6 @@ function updateDisplay(value){
 }
 
 function updateAnswer(value){
-  console.log("in the update answer function. answer: "+ value);
   document.getElementById("answer").innerHTML = value;
 }
 
