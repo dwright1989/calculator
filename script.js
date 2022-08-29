@@ -38,6 +38,10 @@ equalBtn.addEventListener('click', function(){
 });
 
 // Delete Event Listener
+const deleteBtn = document.getElementById("delete");
+deleteBtn.addEventListener('click', function(){
+    deleteNumberFromScreen();
+});
 
 // Period Event Listener
 
@@ -89,6 +93,11 @@ function clearScreen(){
   updateDisplay(upperDisplayValue);
 }
     
+
+function deleteNumberFromScreen(){
+  bottomDisplayValue = bottomDisplayValue.toString().slice(0, -1);
+  updateAnswer(bottomDisplayValue);
+}
 
 function updateDisplay(value){
   document.getElementById("calculator").innerHTML = value;
