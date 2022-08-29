@@ -44,6 +44,10 @@ deleteBtn.addEventListener('click', function(){
 });
 
 // Period Event Listener
+const periodBtn = document.getElementById(".");
+periodBtn.addEventListener('click', function(){
+    addPeriod();
+});
 
 function composeNumbers(value){
   if(bottomDisplayValue==0 || clearBottom){
@@ -92,7 +96,7 @@ function clearScreen(){
   updateAnswer(bottomDisplayValue);
   updateDisplay(upperDisplayValue);
 }
-    
+   
 
 function deleteNumberFromScreen(){
   bottomDisplayValue = bottomDisplayValue.toString().slice(0, -1);
@@ -108,7 +112,9 @@ function updateAnswer(value){
 }
 
 
-
+function addPeriod(){
+  // Functionality still to be added
+}
 
 function add(numOne, numTwo) {
   console.log("about to add the numbers: " + parseInt(numOne) + parseInt(numTwo));
