@@ -30,23 +30,66 @@ clearButton.addEventListener('click', function(){
 
 function buttonPressed(element){
     let value = element.id;
-    if(value >=0 && value<=9){
-        // If the button pressed is a number then update the answer screen 
-        console.log("We have a number");
-        answerValue = answerValue.toString() + value.toString();   
-        console.log("the answer value" + answerValue);  
-        //displayValue = displayValue + answerValue;   
-        console.log("the display value" + displayValue);  
-    }else if(isOperator(value)){
-      displayValue = displayValue + answerValue;
-      displayValue = displayValue + value;
-      answerValue = 0;
+    let newTotal = 0;
+
+    if(value=="="){
+      console.log("the first number is: " + firstNumber + " the secondnumber is " + secondNumber + " the answer is  " + answerValue);
+      firstNumber = secondNumber;
+      secondNumber = answerValue;
+      console.log("the first number is: " + firstNumber + " the secondnumber is " + secondNumber + " the answer is  " + answerValue);
+      evaluateAnswer();
     }
-    answerValue = (answerValue.toString()).replace(/^0+/, '');
-    displayValue = (displayValue.toString()).replace(/^0+/, '');
-    updateAnswer(answerValue);
-    updateDisplay(displayValue);
-  
+    else{
+      
+      if(value >=0 && value<=9){
+          // If the button pressed is a number then update the answer screen
+          if(isOperator(lastButton)){
+              answerValue = value;
+          }
+          else{
+            answerValue = answerValue.toString() + value.toString(); 
+            answerValue = (answerValue.toString()).replace(/^0+/, '');  
+            secondNumber = answerValue;
+            newTotal = answerValue;
+          }
+      }else if(isOperator(value)){
+        if(isOperator(lastButton)){
+          alert("Please select a number!");
+        }else{
+          theOperator = value;
+          if(firstOperative){
+            displayValue = displayValue + answerValue;
+            displayValue = displayValue + value;
+            answerValue = 0;
+            firstOperative = false;
+          }else{
+            firstNumber = secondNumber;
+            secondNumber = answerValue;
+            
+            newTotal = evaluateAnswer();
+            console.log("the new total: " + newTotal);
+            //answerValue = newTotal;
+            displayValue = newTotal;
+          }
+        }
+        
+      }
+      answerValue = (answerValue.toString()).replace(/^0+/, '');
+      displayValue = (displayValue.toString()).replace(/^0+/, '');
+      console.log("#############################");
+      console.log("End of Button Pressed.  Here are the values.");
+      console.log("First Number: " + firstNumber);
+      console.log("Second Number: " + secondNumber);
+      console.log("Answer Value: " + answerValue);
+      console.log("Display Value: " + displayValue);
+      console.log("#############################");
+    // newTotal = (newTotal.toString()).replace(/^0+/, '');
+      //newTotal = parseInt(newTotal);
+      updateAnswer(answerValue);
+      updateDisplay(displayValue);
+      
+    }
+    lastButton = value;
 }
 
 function isOperator(val){
@@ -71,11 +114,10 @@ function clearScreen(){
 
 function evaluateAnswer(){
   let sumTotal = operate(firstNumber, secondNumber, theOperator);
-  console.log("the sum total in the evaluate answer is : "+ sumTotal);
-  console.log("updating the global variable answer");
   answerValue = sumTotal;
   secondNumber = sumTotal;
   updateAnswer(sumTotal);
+  return sumTotal;
 }
 
 function updateDisplay(value){
